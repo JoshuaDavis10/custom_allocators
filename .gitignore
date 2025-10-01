@@ -1,4 +1,4 @@
 test
-build.bash
+*.bash
 *.txt
 test_main.c

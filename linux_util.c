@@ -97,7 +97,7 @@ typedef char static_assertion_##message[(expression)?1:-1]
 #define ASSERT(expression) \
 if(!(expression)) \
 { \
-	printf("\e[1;31m[ASSERT] - [0;31mEXPRESSION: %s, FILE: %s," \
+	printf("\e[1;31m[ASSERT] - \e[0;31mEXPRESSION: %s, FILE: %s," \
 			" LINE: %d\e[0;37m\n", \
 			#expression, __FILE__, __LINE__); \
 	__builtin_trap(); \
@@ -166,7 +166,7 @@ f64 linux_get_time_ms()
 }
 
 /* memory */
-#include <sys/mman.h>
+#include <sys/mman.h> /* for mmap */
 #include <unistd.h> /* for sysconf */
 void *linux_get_memory_pages(u32 pages_count)
 {
@@ -177,4 +177,10 @@ void *linux_get_memory_pages(u32 pages_count)
 		MAP_ANONYMOUS | MAP_PRIVATE,
 		-1, 0);
 	return(address);
+}
+
+u64 linux_get_page_size()
+{
+	u64 page_size = sysconf(_SC_PAGESIZE);
+	return page_size;
 }
